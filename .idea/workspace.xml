@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a92cd54-d30c-4049-9a8e-cdff9a34d7ad" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adaptive_huffman_coding.py" beforeDir="false" afterPath="$PROJECT_DIR$/adaptive_huffman_coding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coding_tree.py" beforeDir="false" afterPath="$PROJECT_DIR$/coding_tree.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
