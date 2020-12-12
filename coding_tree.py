@@ -99,6 +99,19 @@ class AdaptiveCodingTree:
 
         return self.code_by_path(parent, code)
 
+    def get_node(self, sym):
+        leaf = []
+        self.find_node(sym, self.root, leaf)
+        return leaf[0]
+
+    def find_node(self, sym, root, leaf):
+        if root is not None:
+            if root.symbol == sym:
+                leaf.append(root)
+            for n in [root.l, root.r]:
+                self.find_node(sym, n, leaf)
+
+
 
 
 

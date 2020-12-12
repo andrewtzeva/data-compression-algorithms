@@ -9,6 +9,7 @@ def create_coding_trees(text):
     node_dict = {}
     node_list = []
     tree_list = []
+    leaf_list = []
     nyt_node = AdaptiveNode(0, 'NYT', None, 53)
 
     node_dict['NYT'] = nyt_node
@@ -37,6 +38,7 @@ def create_coding_trees(text):
 
             node_list.append(node_par)
             node_list.append(node_par.r)
+
 
             if sym == text[0]:
                 tree.root = node_par
@@ -68,11 +70,11 @@ def create_coding_trees(text):
         # APPEND THE TREE IN TREE_LIST
         tree_list.append(copy.deepcopy(tree))
 
-    return tree_list
+    return tree_list, node_dict
 
 
-def code_path(c_tree, nodes_dict, sym):
-    node = nodes_dict[sym]
+def code_path(c_tree, sym):
+    node = c_tree.get_node(sym)
     code = c_tree.code_by_path(node, '')
 
     return code
@@ -99,22 +101,28 @@ def adaptive_huffman_encode(text):
     final_code = ''
     node_dict = {}
     tree_list, full_node_dict = create_coding_trees(text)
-    # IF FIRST TIME : NYTCODE FOLLOWED BY FIXED CODE
+
     for i in range(len(text)):
         sym = text[i]
         if sym not in node_dict:
             node_dict[sym] = full_node_dict[sym]
-            nyt_code = code_path(tree_list[i], full_node_dict, 'NYT')
+            nyt_code = '' if i == 0 else code_path(tree_list[i], 'NYT')
             fixed = fixed_code(sym)
             code = nyt_code + fixed
-    # ELSE: CODE FOR THAT SYMBOL
+            final_code += code
+        else:
+            code = code_path(tree_list[i], sym)
+            final_code += code
+
+    return final_code
+
+
+def adaptive_huffman_decode(code):
+    pass
 
 
 def main():
-    trees = create_coding_trees('aard')
-
-
-print(fixed_code(''))
+    print(adaptive_huffman_encode('aardvark'))
 
 
 main()
