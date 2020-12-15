@@ -3,13 +3,14 @@ import copy
 from string import ascii_lowercase
 
 alpha = {letter: str(index) for index, letter in enumerate(ascii_lowercase, start=1)}
+e = 4
+r = 11
 
 
 def create_coding_trees(text):
     node_dict = {}
     node_list = []
     tree_list = []
-    leaf_list = []
     nyt_node = AdaptiveNode(0, 'NYT', None, 53)
 
     node_dict['NYT'] = nyt_node
@@ -39,34 +40,25 @@ def create_coding_trees(text):
             node_list.append(node_par)
             node_list.append(node_par.r)
 
-
             if sym == text[0]:
                 tree.root = node_par
-
-            # UPDATE NODE VALUES
-            for node in reversed(node_list):
-                if node.l is not None and node.r is not None:
-                    node.value = node.l.value + node.r.value
-                    if node.l.value > node.r.value:
-                        left = node.l
-                        node.l = node.r
-                        node.r = left
-                # print('SYM:', node.symbol, 'VAL:', node.value, 'WEIGHT:', node.weight)
 
         else:
             node = node_dict[sym]
             node.value += 1
 
-            # UPDATE NODE VALUES
-            for node in reversed(node_list):
-                if node.l is not None and node.r is not None:
-                    node.value = node.l.value + node.r.value
-                    if node.l.value > node.r.value:
-                        left = node.l
-                        node.l = node.r
-                        node.r = left
-                # print('SYM:', node.symbol, 'VAL:', node.value, 'WEIGHT:', node.weight)
+        # UPDATE NODE VALUES
+        for node in reversed(node_list):
 
+            if node.l is not None and node.r is not None:
+                node.value = node.l.value + node.r.value
+                if node.l.value > node.r.value:
+                    #print("THIS:",node)
+                    left = node.l
+                    node.l = node.r
+                    node.r = left
+            #print(node)
+        #print('--------')
         # APPEND THE TREE IN TREE_LIST
         tree_list.append(copy.deepcopy(tree))
 
@@ -81,8 +73,6 @@ def code_path(c_tree, sym):
 
 
 def fixed_code(sym):
-    e = 4
-    r = 11
     if sym == ' ':
         k = 27
     else:
@@ -98,6 +88,7 @@ def fixed_code(sym):
 
 
 def adaptive_huffman_encode(text):
+    text = text.lower()
     final_code = ''
     node_dict = {}
     tree_list, full_node_dict = create_coding_trees(text)
@@ -117,13 +108,63 @@ def adaptive_huffman_encode(text):
     return final_code
 
 
-def adaptive_huffman_decode(code):
-    # TODO
-    pass
+def adaptive_huffman_decode(code, tree_list):
+    text = ''
+    i = 0
+    tree = tree_list[0]
+    j = 0
+    current_node = tree.get_root()
+    nyt_code = ''
+    while j < len(code):
+        bit = code[j]
+
+        if bit == '0' and current_node.l:
+            current_node = current_node.l
+            nyt_code += '0'
+        elif bit == '1' and current_node.r:
+            current_node = current_node.r
+            nyt_code += '1'
+        if current_node.l is None and current_node.r is None:
+            if current_node.symbol == 'NYT':
+                l = 0 if j == 0 else 1
+                fixed_bin = code[j+l:j+l+e]
+
+                fixed = int(fixed_bin, 2)
+                if fixed < r:
+                    fixed_bin += code[j+l+e]
+                    fixed = int(int(fixed_bin, 2)) + 1
+                    letter = list(alpha.keys())[list(alpha.values()).index(str(fixed))]
+                    text += letter
+                    j = j + l + e + 1
+                else:
+                    fixed += r + 1
+                    if fixed == 27:
+                        text += ' '
+                    else:
+                        letter = list(alpha.keys())[list(alpha.values()).index(str(fixed))]
+                        text += letter
+                    j = j + l + e
+
+            else:
+                text += current_node.symbol
+                j += 1
+
+            i += 1
+            tree = tree_list[i]
+            current_node = tree.get_root()
+            nyt_code = ''
+        else:
+            j += 1
+
+    return text
 
 
 def main():
-    print(adaptive_huffman_encode('aardvark'))
+    text = 'test it'
+    code = adaptive_huffman_encode(text)
+    print(code)
+    tree_list = create_coding_trees(text)[0]
+    print(adaptive_huffman_decode(code, tree_list))
 
 
 main()

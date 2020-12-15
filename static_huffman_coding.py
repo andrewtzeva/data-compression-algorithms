@@ -68,10 +68,14 @@ def static_huffman_decode(code, c_tree):
     print(text)
 
 
-text = 'OKEY WE ARE'
-static_huffman_code(text)
-code = '11101111100010111011001110000010'
+def main():
+    text = 'OKEY WE ARE'
+    static_huffman_encode(text)
+    code = '11101111100010111011001110000010'
 
-c_tree = create_coding_tree(text)[0]
+    c_tree = create_coding_tree(text)[0]
 
-static_huffman_decode(code, c_tree)
+    static_huffman_decode(code, c_tree)
+
+
+main()
