@@ -160,7 +160,7 @@ def adaptive_huffman_decode(code, tree_list):
 
 
 def main():
-    text = 'test it'
+    text = 'this is a long text to test this method'
     code = adaptive_huffman_encode(text)
     print(code)
     tree_list = create_coding_trees(text)[0]
