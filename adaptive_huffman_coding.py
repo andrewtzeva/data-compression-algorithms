@@ -45,20 +45,28 @@ def create_coding_trees(text):
 
         else:
             node = node_dict[sym]
+            cur_node = node
+            nodes = tree.level_order_exchange(len(node_list), cur_node)
+            while cur_node != tree.get_root():
+                for this_node in nodes:
+                    if this_node.ord > cur_node.ord and this_node.value < cur_node.value:
+                        exchange(this_node, cur_node)
+                if cur_node.parent:
+                    cur_node = cur_node.parent
+
             node.value += 1
 
-        # UPDATE NODE VALUES
+
         for node in reversed(node_list):
 
             if node.l is not None and node.r is not None:
                 node.value = node.l.value + node.r.value
                 if node.l.value > node.r.value:
-                    #print("THIS:",node)
                     left = node.l
                     node.l = node.r
                     node.r = left
-            #print(node)
-        #print('--------')
+
+
         # APPEND THE TREE IN TREE_LIST
         tree_list.append(copy.deepcopy(tree))
 
@@ -70,6 +78,24 @@ def code_path(c_tree, sym):
     code = c_tree.code_by_path(node, '')
 
     return code
+
+
+def exchange(node1, node2):
+    if node1.parent and node1.parent.l == node1:
+        node1.parent.l = node2
+    elif node1.parent:
+        node1.parent.r = node2
+    if node2.parent and node2.parent.l == node2:
+        node2.parent.l = node1
+    elif node2.parent:
+        node2.parent.r = node1
+
+    if node1.parent and node2.parent:
+        node1.parent, node2.parent = node2.parent, node1.parent
+    node1.ord, node2.ord = node2.ord, node1.ord
+    node1.value, node2.value = node2.value, node1.value
+    if node1.symbol and node2.symbol:
+        node2.symbol, node1.symbol = node1.symbol, node2.symbol
 
 
 def fixed_code(sym):
@@ -87,11 +113,10 @@ def fixed_code(sym):
     return fixed
 
 
-def adaptive_huffman_encode(text):
+def adaptive_huffman_encode(text, tree_list, full_node_dict):
     text = text.lower()
     final_code = ''
     node_dict = {}
-    tree_list, full_node_dict = create_coding_trees(text)
 
     for i in range(len(text)):
         sym = text[i]
@@ -159,12 +184,7 @@ def adaptive_huffman_decode(code, tree_list):
     return text
 
 
-def main():
-    text = 'this is a long text to test this method'
-    code = adaptive_huffman_encode(text)
-    print(code)
-    tree_list = create_coding_trees(text)[0]
-    print(adaptive_huffman_decode(code, tree_list))
 
 
-main()
+
+

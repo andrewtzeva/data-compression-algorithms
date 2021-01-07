@@ -1,5 +1,6 @@
-from collections import Counter
+
 from coding_tree import Node, StaticCodingTree
+from letter_frequencies import freqs as frequencies
 
 
 def code_path(c_tree, nodes_dict, sym):
@@ -16,12 +17,8 @@ def codes(c_tree, nodes_dict):
     return code_dict
 
 
-def find_frequencies(text):
-    return Counter(text)
-
-
 def create_coding_tree(text):
-    freqs = find_frequencies(text)
+    freqs = frequencies
 
     node_list = []
     node_dict = {}
@@ -47,7 +44,7 @@ def static_huffman_encode(text):
     for char in text:
         code += code_dict[char]
 
-    print(code)
+    return code
 
 
 def static_huffman_decode(code, c_tree):
@@ -65,17 +62,7 @@ def static_huffman_decode(code, c_tree):
             text += current_node.symbol
             current_node = c_tree.get_root()
 
-    print(text)
+    return text
 
 
-def main():
-    text = 'OKEY WE ARE'
-    static_huffman_encode(text)
-    code = '11101111100010111011001110000010'
 
-    c_tree = create_coding_tree(text)[0]
-
-    static_huffman_decode(code, c_tree)
-
-
-main()
