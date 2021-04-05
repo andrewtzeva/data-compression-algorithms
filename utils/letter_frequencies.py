@@ -1,7 +1,7 @@
 from collections import Counter
 import re
 
-text = open('mobydick.txt')
+text = open('example-texts/mobydick.txt')
 text = text.read().replace('\n', ' ').upper()
 text = ''.join(e for e in text if e.isalpha() or e.isspace())
 final_text = re.sub(' +', ' ', text)
@@ -16,7 +16,7 @@ def find_freqs():
 
 freqs = find_freqs()
 
-example = open('oliver_twist.txt')
+example = open('example-texts/oliver_twist.txt')
 example = example.read().replace('\n', ' ').lower()
 example = ''.join(e for e in example if e.isalpha() or e.isspace())
 final_example = re.sub(' +', ' ', example)

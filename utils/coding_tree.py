@@ -1,4 +1,4 @@
-import headpq
+import utils.headpq as headpq
 
 
 class Node:

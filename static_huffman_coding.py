@@ -1,6 +1,6 @@
 
-from coding_tree import Node, StaticCodingTree
-from letter_frequencies import freqs as frequencies
+from utils.coding_tree import Node, StaticCodingTree
+from utils.letter_frequencies import freqs as frequencies
 
 
 def code_path(c_tree, nodes_dict, sym):

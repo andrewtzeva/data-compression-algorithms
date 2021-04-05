@@ -1,7 +1,7 @@
 from static_huffman_coding import static_huffman_decode, static_huffman_encode, create_coding_tree
 from adaptive_huffman_coding import adaptive_huffman_decode, adaptive_huffman_encode, create_coding_trees
 from lz77 import lz77_encode, lz77_decode
-from letter_frequencies import final_example
+from utils.letter_frequencies import final_example
 import time
 import gzip
 import bitarray

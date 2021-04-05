@@ -1,4 +1,4 @@
-from coding_tree import AdaptiveCodingTree, AdaptiveNode
+from utils.coding_tree import AdaptiveCodingTree, AdaptiveNode
 import copy
 from string import ascii_lowercase
 
